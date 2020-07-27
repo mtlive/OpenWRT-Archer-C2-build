@@ -2,7 +2,7 @@ language: c
 addons:
   apt:
     packages:
-      - subversion build-essential libncurses5-dev zlib1g-dev gawk git ccache gettext libssl-dev xsltproc zip file g++-8 7z
+      - subversion build-essential libncurses5-dev zlib1g-dev gawk git ccache gettext libssl-dev xsltproc zip file g++-8 p7zip-full
 script:
   - git clone -b v19.07.3 --depth 1 https://git.openwrt.org/openwrt/openwrt.git 
   - cd openwrt && ./scripts/feeds update -a
