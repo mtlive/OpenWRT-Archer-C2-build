@@ -24,13 +24,11 @@ jobs:
 
     # Runs a single command using the runners shell
     - name: prereq
-      run: apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y install subversion build-essential libncurses5-dev zlib1g-dev gawk git ccache gettext libssl-dev xsltproc zip file wget python2
+      run: sudo apt-get update && sudo DEBIAN_FRONTEND=noninteractive apt-get -y install subversion build-essential libncurses5-dev zlib1g-dev gawk git ccache gettext libssl-dev xsltproc zip file wget python2
 
     # Runs a set of commands using the runners shell
     - name: Build
       run: |
-        useradd -ms /bin/bash newuser
-        su - newuser
         git clone -b v19.07.3 --depth 1 https://git.openwrt.org/openwrt/openwrt.git 
         cd openwrt
 
