@@ -12,7 +12,7 @@ script:
   - cp -rf tun2socks-Openwrt/badvpn package/
   - rm -rf tun2socks-Openwrt/
   - mv ../1.config .config 
-  - make defconfig
+  - make silentoldconfig
   - sed -i "/^CONFIG_DEFAULT_TARGET_OPTIMIZATION/c\CONFIG_DEFAULT_TARGET_OPTIMIZATION=\"-Os -pipe -mno-branch-likely -mips32r2 -march=24kec -mtune=24kec -mdsp\"" .config
   - make download -j20
   - make -j10 V=1
