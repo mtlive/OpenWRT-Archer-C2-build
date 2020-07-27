@@ -1,3 +1,4 @@
+arch: ppc64le
 language: c
 addons:
   apt:
@@ -15,7 +16,7 @@ script:
 #  - make oldconfig
   - sed -i "/^CONFIG_DEFAULT_TARGET_OPTIMIZATION/c\CONFIG_DEFAULT_TARGET_OPTIMIZATION=\"-Os -pipe -mno-branch-likely -mips32r2 -march=24kec -mtune=24kec -mdsp\"" .config
   - make download -j20
-  - travis_wait 40 make -j8
+  - travis_wait 120 make -j8
   
   - 7z a ../bin.7z bin
 
