@@ -1,6 +1,4 @@
 language: c
-cache: ccache
-env: GCC_VERSION=8
 addons:
   apt:
     packages:
@@ -15,6 +13,7 @@ script:
   - cd openwrt && rm -rf tun2socks-Openwrt/
   - mv 1.config openwrt/.config 
   - cd openwrt && make oldconfig
+  - 
   - cd openwrt && make download -j20
   - cd openwrt && make -j10 V=1
   
@@ -26,7 +25,7 @@ deploy:
   api_key: ${KEY}
   file_glob: true
   file: 
-    - "openwrt\bin\targets\ramips\mt7620\openwrt-ramips-mt7620-tplink_c2-v1-squashfs-sysupgrade.bin"
+    - "openwrt/bin/targets/ramips/mt7620/openwrt-ramips-mt7620-tplink_c2-v1-squashfs-sysupgrade.bin"
     - "bin.7z"
   on:
     tags: true
