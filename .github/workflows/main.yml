@@ -47,3 +47,10 @@ jobs:
         make download -j10
         make -j5
         7z a  ../owrt2.7z openwrt/bin
+        
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: Binaries
+        path: owrt2.7z
+
