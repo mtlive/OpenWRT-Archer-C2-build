@@ -1,0 +1,38 @@
+#sudo: required
+#dist: trusty
+#before_install:
+#- docker pull lineageos4microg/docker-lineage-cicd
+#- docker run -e "BRANCH_NAME=cm-11.0" -v "/home/user/lineage:/srv/src" -v "/home/user/zips:/srv/zips" -v "/home/user/logs:/srv/logs" -v "/home/user/cache:/srv/ccache" lineageos4microg/docker-lineage-cicd
+language: c
+cache: ccache
+env: GCC_VERSION=8
+addons:
+  apt:
+    packages:
+    - subversion build-essential libncurses5-dev zlib1g-dev gawk git ccache gettext libssl-dev xsltproc zip file
+script:
+- git clone -b v19.07.3 --depth 1 https://git.openwrt.org/openwrt/openwrt.git 
+- cd openwrt && ./scripts/feeds update -a
+- cd openwrt && ./scripts/feeds install -a
+
+- cd openwrt && git clone https://github.com/yazdan/tun2socks-Openwrt
+- cd openwrt && cp -rf tun2socks-Openwrt/badvpn package/
+- cd openwrt && rm -rf tun2socks-Openwrt/
+- mv 1.config openwrt/.config 
+- cd openwrt && make oldconfig
+- cd openwrt && make download -j20
+- cd openwrt && make -j10 V=1
+
+- 7z a  bin.7z openwrt/bin
+
+deploy:
+  provider: releases
+  skip_cleanup: true
+  api_key: ${KEY}
+  file_glob: true
+  file: 
+    - "openwrt\bin\targets\ramips\mt7620\openwrt-ramips-mt7620-tplink_c2-v1-squashfs-sysupgrade.bin"
+    - "bin.7z"
+  on:
+    tags: true
+    all_branches: true
