@@ -1,4 +1,3 @@
-arch: ppc64le
 language: c
 addons:
   apt:
