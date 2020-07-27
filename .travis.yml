@@ -5,14 +5,14 @@ addons:
       - subversion build-essential libncurses5-dev zlib1g-dev gawk git ccache gettext libssl-dev xsltproc zip file g++-8 p7zip-full
 script:
   - git clone -b v19.07.3 --depth 1 https://git.openwrt.org/openwrt/openwrt.git 
-  - cd openwrt && ./scripts/feeds update -a
-  - cd openwrt && ./scripts/feeds install -a
-
+  - cd openwrt 
+  - ./scripts/feeds update -a
+  - ./scripts/feeds install -a
   - git clone https://github.com/yazdan/tun2socks-Openwrt
   - cp -rf tun2socks-Openwrt/badvpn package/
   - rm -rf tun2socks-Openwrt/
   - mv ../1.config .config 
-  - make silentoldconfig
+#  - make oldconfig
   - sed -i "/^CONFIG_DEFAULT_TARGET_OPTIMIZATION/c\CONFIG_DEFAULT_TARGET_OPTIMIZATION=\"-Os -pipe -mno-branch-likely -mips32r2 -march=24kec -mtune=24kec -mdsp\"" .config
   - make download -j20
   - make -j10 V=1
