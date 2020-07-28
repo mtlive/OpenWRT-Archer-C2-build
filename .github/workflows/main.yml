@@ -6,10 +6,13 @@ name: CI
 # events but only for the master branch
 
 on:
-  push:
+  release:
+    types:
+      - published
+#   push:
 #    branches: [ master ]
-    tags:
-    - '*'
+#     tags:
+#     - '*'
 #  pull_request:
 #    branches: [ master ]
 
