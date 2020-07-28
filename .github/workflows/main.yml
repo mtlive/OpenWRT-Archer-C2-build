@@ -52,7 +52,7 @@ jobs:
 
         make download -j10
         make -j6
-        zip -r -9  ../binaries /bin
+        zip -r -9  ../binaries bin
 
     - name: "Get upload_url"
       run: echo "::set-output name=upload_url::https://uploads.github.com/repos/$GITHUB_REPOSITORY/releases/$(jq --raw-output '.release.id' $GITHUB_EVENT_PATH)/assets{?name,label}"  
@@ -74,7 +74,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: openwrt-ramips-mt7620-tplink_c2-v1-squashfs-sysupgrade.bin
+        asset_path: openwrt/bin/targets/ramips/mt7620/*-sysupgrade.bin
         asset_name: openwrt-ramips-mt7620-tplink_c2-v1-squashfs-sysupgrade.bin
         asset_content_type: application/octet-stream
 #         asset_content_type: application/bin
