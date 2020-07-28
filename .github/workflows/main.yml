@@ -4,11 +4,14 @@ name: CI
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
+
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+#    branches: [ master ]
+    tags:
+    - '*'
+#  pull_request:
+#    branches: [ master ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -43,12 +46,45 @@ jobs:
         mv ../1.config .config
         make oldconfig
         make download -j10
-        make -j5
-        7z a  ../owrt2.7z openwrt/bin
-        
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v2
+        make -j6
+        zip -r -9  ../binaries /bin
+
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        name: Binaries
-        path: owrt2.7z
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+    - name: Upload Release Asset
+      id: upload-release-asset 
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: binaries.zip
+        asset_name: binaries.zip
+        asset_content_type: application/zip
+    - name: Upload Release Asset
+      id: upload-release-asset2
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: openwrt-ramips-mt7620-tplink_c2-v1-squashfs-sysupgrade.bin
+        asset_name: openwrt-ramips-mt7620-tplink_c2-v1-squashfs-sysupgrade.bin
+#         asset_content_type: application/bin
+#     - name: Upload build artifacts
+#       uses: actions/upload-artifact@v2
+#       with:
+#         name: Binaries
+#         path: |
+#           binaries.*
+#           openwrt/bin/targets/ramips/mt7620/*-sysupgrade.bin
 
