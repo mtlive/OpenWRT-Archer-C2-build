@@ -57,7 +57,7 @@ jobs:
         sed -i 's/-Os -pipe -mno-branch-likely -mips32r2 -mtune=24kc/-O2 -pipe -mno-branch-likely -mips32r2 -march=24kec -mtune=24kec -mdsp/g' .config
         sed -i "/^CONFIG_CPU_TYPE=\"24kc\"/c\CONFIG_CPU_TYPE=\"24kec+mdsp\"" .config
         
-        export KCFLAGS=" -mips32r2 -mtune=24kec -mdsp -Ofast " #kernel optimization flags
+        export KCFLAGS=" -mips32r2 -mtune=24kec -Ofast " #kernel optimization flags
 
         make download -j14
         make -j6
@@ -83,7 +83,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: openwrt/bin/targets/ramips/mt7620/openwrt-ramips-mt7620-tplink_c2-v1-squashfs-sysupgrade.bin
+        asset_path: openwrt/bin/targets/ramips/mt7620/openwrt-19.07.3-ramips-mt7620-tplink_c2-v1-squashfs-factory.bin
         asset_name: openwrt-ramips-mt7620-tplink_c2-v1-squashfs-sysupgrade.bin
         asset_content_type: application/octet-stream
 #         asset_content_type: application/bin
