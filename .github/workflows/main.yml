@@ -45,12 +45,21 @@ jobs:
         cp -rf tun2socks-Openwrt/badvpn package/
         rm -rf tun2socks-Openwrt/
 
+        wget https://downloads.openwrt.org/releases/19.07.3/targets/ramips/mt7620/config.buildinfo -O .config
+        sed -i "/CONFIG_TARGET_DEVICE/d" .config
+        sed -i "/CONFIG_TARGET_ALL_PROFILES/d" .config
+        sed -i "/CONFIG_AUTOREMOVE/d" .config
+        sed -i "/CONFIG_BUILDBOT/d" .config
+        sed -i "/CONFIG_IB/d" .config
+        sed -i "/CONFIG_SDK/d" .config
+        cat ../1.config >> .config
+        make defconfig
+        sed -i 's/-Os -pipe -mno-branch-likely -mips32r2 -mtune=24kc/-O2 -pipe -mno-branch-likely -mips32r2 -march=24kec -mtune=24kec -mdsp/g' .config
+        sed -i "/^CONFIG_CPU_TYPE=\"24kc\"/c\CONFIG_CPU_TYPE=\"24kec+mdsp\"" .config
+        
+        export KCFLAGS=" -mips32r2 -mtune=24kec -mdsp -Ofast " #kernel optimization flags
 
-        mv ../1.config .config
-        make oldconfig
-        sed -i "/^CONFIG_DEFAULT_TARGET_OPTIMIZATION/c\CONFIG_DEFAULT_TARGET_OPTIMIZATION=\"-Os -pipe -mno-branch-likely -mips32r2 -march=24kec -mtune=24kec -mdsp\"" .config
-
-        make download -j10
+        make download -j14
         make -j6
         zip -r -9  ../binaries bin
 
@@ -74,7 +83,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: openwrt/bin/targets/ramips/mt7620/*-sysupgrade.bin
+        asset_path: openwrt/bin/targets/ramips/mt7620/openwrt-ramips-mt7620-tplink_c2-v1-squashfs-sysupgrade.bin
         asset_name: openwrt-ramips-mt7620-tplink_c2-v1-squashfs-sysupgrade.bin
         asset_content_type: application/octet-stream
 #         asset_content_type: application/bin
