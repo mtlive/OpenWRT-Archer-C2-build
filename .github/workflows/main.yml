@@ -54,7 +54,7 @@ jobs:
         sed -i "/CONFIG_SDK/d" .config
         cat ../1.config >> .config
         make defconfig
-        sed -i 's/-Os -pipe -mno-branch-likely -mips32r2 -mtune=24kc/-O2 -pipe -mno-branch-likely -mips32r2 -march=24kec -mtune=24kec -mdsp -ftree-vectorize -frename-registers -fweb /g' .config
+        sed -i 's/-Os -pipe -mno-branch-likely -mips32r2 -mtune=24kc/-O2 -pipe -mno-branch-likely -mips32r2 -march=24kec -mtune=24kec -mdsp -frename-registers -fweb /g' .config
         sed -i "/^CONFIG_CPU_TYPE=\"24kc\"/c\CONFIG_CPU_TYPE=\"24kec+mdsp\"" .config
         
         #kernel optimization flags
