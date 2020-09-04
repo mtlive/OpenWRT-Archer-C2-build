@@ -58,7 +58,7 @@ jobs:
         sed -i "/^CONFIG_CPU_TYPE=\"24kc\"/c\CONFIG_CPU_TYPE=\"24kec+mdsp\"" .config
         
         #kernel optimization flags
-        export KCFLAGS=" -mips32r2 -mtune=24kec -ffast-math -frename-registers -fweb "
+        export KCFLAGS=" -Ofast -mips32r2 -mtune=24kec -ffast-math -frename-registers -fweb "
 
         make download -j14
         make -j5
