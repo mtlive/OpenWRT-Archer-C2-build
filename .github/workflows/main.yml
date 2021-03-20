@@ -84,7 +84,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: openwrt/bin/targets/ramips/mt7620/openwrt-ramips-mt7620-tplink_c2-v1-squashfs-sysupgrade.bin
+        asset_path: openwrt/bin/targets/ramips/mt7620/openwrt-19.07.7-ramips-mt7620-tplink_c2-v1-squashfs-sysupgrade.bin
         asset_name: openwrt-ramips-mt7620-tplink_c2-v1-squashfs-sysupgrade.bin
         asset_content_type: application/octet-stream
 #         asset_content_type: application/bin
