@@ -35,7 +35,7 @@ jobs:
     # Runs a set of commands using the runners shell
     - name: Build
       run: |
-        git clone -b v19.07.8 --depth 1 https://git.openwrt.org/openwrt/openwrt.git 
+        git clone -b v19.07.9 --depth 1 https://git.openwrt.org/openwrt/openwrt.git 
         cd openwrt
 
         ./scripts/feeds update -a
@@ -45,7 +45,7 @@ jobs:
         cp -rf tun2socks-Openwrt/badvpn package/
         rm -rf tun2socks-Openwrt/
 
-        wget https://downloads.openwrt.org/releases/19.07.8/targets/ramips/mt7620/config.buildinfo -O .config
+        wget https://downloads.openwrt.org/releases/19.07.9/targets/ramips/mt7620/config.buildinfo -O .config
         sed -i "/CONFIG_TARGET_DEVICE/d" .config
         sed -i "/CONFIG_TARGET_ALL_PROFILES/d" .config
         sed -i "/CONFIG_AUTOREMOVE/d" .config
@@ -84,7 +84,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: openwrt/bin/targets/ramips/mt7620/openwrt-19.07.8-ramips-mt7620-tplink_c2-v1-squashfs-sysupgrade.bin
+        asset_path: openwrt/bin/targets/ramips/mt7620/openwrt-19.07.9-ramips-mt7620-tplink_c2-v1-squashfs-sysupgrade.bin
         asset_name: openwrt-ramips-mt7620-tplink_c2-v1-squashfs-sysupgrade.bin
         asset_content_type: application/octet-stream
 #         asset_content_type: application/bin
